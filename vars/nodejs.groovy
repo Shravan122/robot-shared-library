@@ -35,11 +35,10 @@ def call() {
                 steps {
                     script { 
                         sonarcheck()
-                        //env.ARGS=-Dsonar.sources=. 
-                        //common.sonarCheck()
+                        
                     }
                 }
+            } 
         } 
-    } 
- }
+    }
 }
