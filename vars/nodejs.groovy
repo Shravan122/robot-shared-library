@@ -11,7 +11,7 @@ def lintCheck() {
 
 def sonarCheck() {
     sh ''' 
-        sonar-scanner -Dsonar.host.url=http://172.31.0.180:9000  -Dsonar.sources=.  -Dsonar.projectKey=${COMPONENT} -Dsonar.login=admin -Dsonar.password=password
+        sonar-scanner -Dsonar.host.url=http://172.31.0.180:9000  -Dsonar.sources=.  -Dsonar.projectKey=${COMPONENT} -Dsonar.login=${SONAR_USR} -Dsonar.password=${SONAR_PSW}
        ''' 
 }
 def call() {
