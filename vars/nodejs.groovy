@@ -9,11 +9,11 @@ def lintCheck() {
 } 
 
 
-def sonarCheck() {
-    sh ''' 
-        sonar-scanner -Dsonar.host.url=http://172.31.0.180:9000  -Dsonar.sources=.  -Dsonar.projectKey=${COMPONENT} -Dsonar.login=${SONAR_USR} -Dsonar.password=${SONAR_PSW}
-       ''' 
-}
+//def sonarCheck() {
+  //  sh ''' 
+    //    sonar-scanner -Dsonar.host.url=http://172.31.0.180:9000  -Dsonar.sources=.  -Dsonar.projectKey=${COMPONENT} -Dsonar.login=${SONAR_USR} -Dsonar.password=${SONAR_PSW}
+      // ''' 
+//}
 def call() {
     pipeline {
         agent any  
@@ -39,11 +39,30 @@ def call() {
                     script {  
                           env.ARGS="-Dsonar.sources=."
                          common.sonarCheck()
-                        
-                        
+                        }
                     }
-                }
-            } 
-        } 
+                } 
+                stage('Test Cases') {
+                parallel {
+                    stage('Unit Tests') {
+                        steps {
+                           sh 'echo Unit Test Cases Completed'
+                          }
+                     }
+                    stage('Integration Tests') {
+                        steps {
+                           sh 'echo Integration Test Cases Completed'
+                          }
+                     }
+                    stage('Functional Tests') {
+                        steps {
+                            sh 'echo Functional Test Cases Completed'
+                          }
+                     }
+                 }
+            }    // end of statges 
+         }
+     }
+            }    
+        }
     }
-}
