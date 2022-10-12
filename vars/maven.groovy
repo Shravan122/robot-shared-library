@@ -7,11 +7,11 @@ def lintCheck() {
        ''' 
 }
 
-def sonarCheck() {
-    sh ''' 
-     sonar-scanner -Dsonar.host.url=http://172.31.0.180:9000   -Dsonar.java.binaries=target/  -Dsonar.projectKey=shipping -Dsonar.login=${SONAR_USR} -Dsonar.password=${SONAR_PSW}
-     ''' 
-}
+// def sonarCheck() {
+   // sh ''' 
+     //  sonar-scanner -Dsonar.host.url=http://172.31.0.180:9000 -Dsonar.java.binaries=target/  -Dsonar.projectKey=shipping -Dsonar.login=${SONAR_USR} -Dsonar.password=${SONAR_PSW}
+     //''' 
+//}
 def call() {
     pipeline {
         agent any 
@@ -28,8 +28,9 @@ def call() {
             }
              stage('Sonar Check') {
                 steps {
-                    script { 
-                        sonarCheck()
+                    script {  
+                          env.ARGS="--Dsonar.java.binaries=target/"
+                         common.sonarCheck()
                         
                     }
                 }

@@ -17,7 +17,17 @@ def call() {
                         lintCheck()
                     }
                 }
-            }
+            } 
+             stage('Sonar Check') {
+                steps {
+                    script {  
+                          env.ARGS="-Dsonar.sources=."
+                         common.sonarCheck()
+                        
+                        
+                    }
+                }
+            } 
         }    // end of statges 
     }
 }
