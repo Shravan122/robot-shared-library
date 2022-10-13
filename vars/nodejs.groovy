@@ -19,6 +19,7 @@ def call() {
         agent any  
     environment {
         SONAR      = credentials('SONAR') 
+        NEXUS      = credentials('NEXUS')
     }
     
         stages {
@@ -60,8 +61,36 @@ def call() {
                           }
                      }
                  }
-            }    // end of statges 
-         }
-     }
-}    
+            } 
+                stage('Prepare Artifacts') {
+                when {
+                    expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
+              //     expression { env.UPLOAD_STATUS == "" }
+                }
+                steps {
+                    sh ''' 
+                         npm install 
+                         zip ${COMPONENT}-${TAG_NAME}.zip node_modules server.js
+
+                    ''' 
+                }
+            }
+
+                stage('Upload Artifacts') {
+                when {
+                    expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
+             //       expression { env.UPLOAD_STATUS == "" }
+                }
+                steps {
+                    sh ''' 
+                       curl -f -v -u ${NEXUS_USR}:${NEXUS_PSW} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://172.31.1.155:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip
+                   '''
+                }
+            }
+        }  // end of statges 
+        
+    } 
+}
+
+    
         
