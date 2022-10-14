@@ -38,8 +38,8 @@ def call() {
               stage('Sonar Check') {
                 steps {
                     script {  
-                          env.ARGS="-Dsonar.sources=."
-                         common.sonarCheck()
+                        env.ARGS="-Dsonar.sources=."
+                        common.sonarCheck()
                         }
                     }
                 } 
@@ -65,7 +65,7 @@ def call() {
                 stage('Prepare Artifacts') {
                 when {
                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
-                    expression { env.UPLOAD_STATUS == "" }
+            
                 }
                 steps {
                     sh ''' 
@@ -79,7 +79,7 @@ def call() {
                 stage('Upload Artifacts') {
                 when {
                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
-                    expression { env.UPLOAD_STATUS == "" }
+        
                 }
                 steps {
                     sh ''' 
