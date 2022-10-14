@@ -43,6 +43,17 @@ def call() {
                         }
                     }
                 } 
+                 stage('Check the release') {
+                 when {
+                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
+                 }
+                 steps {
+                     script {
+                         env.UPLOAD_STATUS=sh(returnStdout: true, script: 'curl -L -s http://172.31.1.155:8081/service/rest/repository/browse/${COMPONENT} | grep ${COMPONENT}-${TAG_NAME}.zip || true')
+                         print UPLOAD_STATUS
+                     }
+                 }
+             }
                 stage('Test Cases') {
                 parallel {
                     stage('Unit Tests') {
@@ -65,7 +76,7 @@ def call() {
                 stage('Prepare Artifacts') {
                 when {
                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
-            
+                    expression { env.UPLOAD_STATUS == "" }
                 }
                 steps {
                     sh ''' 
@@ -79,7 +90,7 @@ def call() {
                 stage('Upload Artifacts') {
                 when {
                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
-        
+                    expression { env.UPLOAD_STATUS == "" }
                 }
                 steps {
                     sh ''' 
