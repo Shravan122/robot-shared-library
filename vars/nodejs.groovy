@@ -9,11 +9,11 @@ def lintCheck() {
 } 
 
 
-//def sonarCheck() {
-  //  sh ''' 
-    //    sonar-scanner -Dsonar.host.url=http://172.31.0.180:9000  -Dsonar.sources=.  -Dsonar.projectKey=${COMPONENT} -Dsonar.login=${SONAR_USR} -Dsonar.password=${SONAR_PSW}
-      // ''' 
-//}
+def sonarCheck() {
+    sh ''' 
+       sonar-scanner -Dsonar.host.url=http://172.31.0.180:9000  -Dsonar.sources=.  -Dsonar.projectKey=${COMPONENT} -Dsonar.login=${SONAR_USR} -Dsonar.password=${SONAR_PSW}
+       ''' 
+}
 def call() {
     pipeline {
         agent any  
@@ -65,7 +65,7 @@ def call() {
                 stage('Prepare Artifacts') {
                 when {
                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
-              //     expression { env.UPLOAD_STATUS == "" }
+                    expression { env.UPLOAD_STATUS == "" }
                 }
                 steps {
                     sh ''' 
@@ -79,7 +79,7 @@ def call() {
                 stage('Upload Artifacts') {
                 when {
                     expression { env.TAG_NAME != null }   // Only runs when you run this against the TAG
-             //       expression { env.UPLOAD_STATUS == "" }
+                    expression { env.UPLOAD_STATUS == "" }
                 }
                 steps {
                     sh ''' 
