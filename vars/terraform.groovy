@@ -15,7 +15,7 @@ properties([
     node {
       ansiColor('xterm') {
         sh "rm -rf *"
-        git branch: 'main', url: "https://github.com//${REPONAME}.git"  
+        git branch: 'main', url: "https://github.com/Shravan122/${REPONAME}.git"  
 
         stage('Terraform Init'){
             sh ''' 
